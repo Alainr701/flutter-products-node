@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:products_app/screens/screens.dart';
+import 'package:products_app/services/notifications_service.dart';
 import 'package:products_app/services/services.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,7 @@ class AppState extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ProductServices()),
+        ChangeNotifierProvider(create: (_) => AuthService()),
       ],
       child: const MyApp(),
     );
@@ -31,11 +33,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      initialRoute: 'home',
+      initialRoute: 'checking',
+      scaffoldMessengerKey: NotificationsServices.messengerKey,
       routes: {
         'login': (context) =>  const LoginScreen(),
+        'register': (context) =>  const RegisterScreen(),
         'home': (context) =>  const HomeScreen(),
-        'product': (context) =>  const ProductScreen()
+        'product': (context) =>  const ProductScreen(),
+        'checking': (context) =>  const CheckAuthScreen(),
       },
     );
   }

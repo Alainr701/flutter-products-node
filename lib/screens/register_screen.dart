@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:products_app/providers/login_form_provider.dart';
-import 'package:products_app/services/notifications_service.dart';
 import 'package:products_app/services/services.dart';
 import 'package:products_app/ui/input_decorations.dart';
 import 'package:products_app/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,7 @@ class LoginScreen extends StatelessWidget {
                   CardContainer(child: Column(
                     children: [
                    const SizedBox(height: 10),
-                   const Text('LOGIN', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                   const Text('REGISTER', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
                    ChangeNotifierProvider( create: (_)=>LoginFormProvider(),child: _LoginForm()),
                    const Spacer(),  
                    TextButton(
@@ -30,7 +29,7 @@ class LoginScreen extends StatelessWidget {
                    style: ButtonStyle(
                      shape: MaterialStateProperty.all(const StadiumBorder())
                    ),
-                   child:const Text('Crea una nueva cuenta',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                   child:const Text('Ya tienes una cuenta?',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
                     ),      
                    const SizedBox(height: 50),   
                     ],
@@ -109,20 +108,19 @@ class _LoginForm extends StatelessWidget {
                 //   style: TextStyle(color: Colors.white,fontSize: 20)),
               ),
               onPressed:  loginForm.isLoading? null : () async {
-                   FocusScope.of(context).unfocus();
+                FocusScope.of(context).unfocus();
                 final authService = Provider.of<AuthService>(context,listen: false);
 
                 if (!loginForm.isValidForm()) return;
                 
                 loginForm.isLoading =true;
 
-                final String? errorMessage = await authService.login(loginForm.email, loginForm.password);
+                final String? errorMessage = await authService.createUser(loginForm.email, loginForm.password);
 
                 if (errorMessage == null) {
                 Navigator.pushNamed(context, 'home');
                 }else{
-                  // print(errorMessage);
-                  NotificationsServices.showSnackbar(errorMessage);
+                  print(errorMessage);
                 }
                 loginForm.isLoading = false;
               },
